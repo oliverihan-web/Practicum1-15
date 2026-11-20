@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopSphere - Text Styles and Layouts</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f7fa;
+            padding: 40px;
+            color: #222222;
+        }
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+        }
+        h1 {
+            font-size: 26px;
+            font-weight: bold;
+            line-height: 1.25;
+            color: #1b365d;
+            margin-bottom: 18px;
+        }
+        hr {
+            border: 0;
+            height: 1px;
+            background-color: #dcdcdc;
+            margin-bottom: 20px;
+        }
+        h2 {
+            font-size: 20px;
+            font-weight: bold;
+            color: #222222;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            font-size: 14px;
+            color: #333333;
+            line-height: 1.5;
+            margin-bottom: 24px;
+        }
+        .layout {
+            display: flex;
+            gap: 16px;
+        }
+        .card {
+            flex: 1;
+            border: 1px solid #dcdcdc;
+            border-radius: 6px;
+            padding: 16px;
+            background-color: #fafafa;
+        }
+        .card h3 {
+            font-size: 16px;
+            font-weight: bold;
+            color: #1b365d;
+            margin-bottom: 10px;
+        }
+        .sidebar-text {
+            font-size: 14px;
+            font-style: italic;
+            letter-spacing: 0.5px;
+            color: #444444;
+            line-height: 1.5;
+        }
+        .main-text {
+            font-size: 14px;
+            text-transform: uppercase;
+            word-spacing: 2px;
+            color: #444444;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ShopSphere AI Shopping and<br>Smart Storefront</h1>
+        <hr>
+        <h2>Personalized E-Commerce Layout</h2>
+        <p class="subtitle">ShopSphere delivers an AI-driven shopping experience with tailored product recommendations, smart search, and seamless order tracking.</p>
+
+        <div class="layout">
+            <div class="card">
+                <h3>Store Highlights</h3>
+                <p class="sidebar-text">Curated electronics, fashion, and home essentials with verified customer reviews, fast shipping, and 24/7 AI shopping assistance.</p>
+            </div>
+            <div class="card">
+                <h3>Smart Shopping Offers</h3>
+                <p class="main-text">Real-time price drop alerts, instant personalized deal matching, and express doorstep delivery across every product category.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

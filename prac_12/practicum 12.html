@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopSphere - Endpoint Data Management</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f7fa;
+            color: #222222;
+            padding: 28px;
+        }
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+        .header {
+            background-color: #1b365d;
+            color: #ffffff;
+            padding: 24px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            border-bottom: 4px solid #0284c7;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+        .header h1 {
+            font-size: 24px;
+            color: #38bdf8;
+        }
+        .header p {
+            font-size: 14px;
+            color: #dbeafe;
+            margin-top: 5px;
+        }
+        .status-badge {
+            background-color: #294c7a;
+            color: #e0f2fe;
+            border: 1px solid #38bdf8;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+        .card {
+            background-color: #ffffff;
+            padding: 24px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+            margin-bottom: 22px;
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .card h2 {
+            font-size: 19px;
+            color: #1b365d;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin-bottom: 15px;
+        }
+        .field-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: bold;
+            color: #1b365d;
+            margin-bottom: 5px;
+        }
+        input[type="text"] {
+            padding: 10px 12px;
+            border: 1px solid #94a3b8;
+            border-radius: 4px;
+            font-size: 14px;
+            width: 100%;
+        }
+        .btn {
+            background-color: #0284c7;
+            color: #ffffff;
+            border: none;
+            padding: 10px 18px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #0369a1;
+        }
+        .btn-secondary {
+            background-color: #1b365d;
+            color: #ffffff;
+        }
+        .btn-secondary:hover {
+            background-color: #294c7a;
+        }
+        .btn-delete {
+            background-color: #dc3545;
+            color: #ffffff;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .btn-delete:hover {
+            background-color: #b02a37;
+        }
+        .alert-box {
+            display: none;
+            padding: 10px 14px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
+            margin-top: 12px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            padding: 12px 14px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 14px;
+        }
+        th {
+            background-color: #1b365d;
+            color: #ffffff;
+        }
+        .debug-console {
+            background-color: #0f172a;
+            color: #38bdf8;
+            font-family: monospace;
+            font-size: 13px;
+            padding: 15px;
+            border-radius: 6px;
+            max-height: 185px;
+            overflow-y: auto;
+            line-height: 1.6;
+        }
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div>
+                <h1>ShopSphere Endpoint Data Manager</h1>
+                <p>REST API integration (GET, POST, DELETE) with validation and live debug logs</p>
+            </div>
+            <div class="status-badge" id="apiStatus">API Status: Ready</div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h2>1. Push Customer Order Record (Input Validation + POST)</h2>
+            </div>
+            <form id="endpointForm" action="#">
+                <div class="form-grid">
+                    <div class="field-group">
+                        <label for="skuId">Product SKU:</label>
+                        <input type="text" id="skuId" placeholder="e.g. SS-105">
+                    </div>
+                    <div class="field-group">
+                        <label for="customerName">Customer Name:</label>
+                        <input type="text" id="customerName" placeholder="e.g. Karthik R.">
+                    </div>
+                    <div class="field-group">
+                        <label for="orderAmount">Order Amount (Rs.):</label>
+                        <input type="text" id="orderAmount" placeholder="Numbers only (100 - 500000)">
+                    </div>
+                </div>
+                <button type="button" class="btn" onclick="submitOrderRecord()">POST to Endpoint</button>
+            </form>
+            <div id="alertBox" class="alert-box"></div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h2>2. Processed Endpoint Records (GET + Display Function)</h2>
+                <button type="button" class="btn btn-secondary" onclick="fetchFromEndpoint()">Fetch Records</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Record ID</th>
+                        <th>Product SKU</th>
+                        <th>Customer Name</th>
+                        <th>Order Summary</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="orderTableBody"></tbody>
+            </table>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h2>3. API Test &amp; Debugging Console</h2>
+                <button type="button" class="btn btn-secondary" onclick="runEndpointTest()">Run Endpoint Test</button>
+            </div>
+            <div class="debug-console" id="debugConsole"></div>
+        </div>
+    </div>
+
+    <script>
+        const ENDPOINT_URL = "https://jsonplaceholder.typicode.com/posts";
+        const tableBody = document.getElementById("orderTableBody");
+        const apiStatus = document.getElementById("apiStatus");
+        const alertBox = document.getElementById("alertBox");
+        const debugConsole = document.getElementById("debugConsole");
+
+        const sampleOrders = [
+            { sku: "SS-101", customer: "Arjun Menon", amount: 3500 },
+            { sku: "SS-102", customer: "Priya Nair", amount: 5000 },
+            { sku: "SS-103", customer: "Rahul Verma", amount: 3900 },
+            { sku: "SS-104", customer: "Sneha Das", amount: 12400 }
+        ];
+
+        function logDebug(message) {
+            const time = new Date().toLocaleTimeString();
+            const line = document.createElement("div");
+            line.textContent = "[" + time + "] " + message;
+            debugConsole.appendChild(line);
+            debugConsole.scrollTop = debugConsole.scrollHeight;
+            console.log(message);
+        }
+
+        function showAlert(message, isError) {
+            alertBox.style.display = "block";
+            alertBox.style.backgroundColor = isError ? "#ffe5e5" : "#d4edda";
+            alertBox.style.color = isError ? "#b30000" : "#155724";
+            alertBox.textContent = message;
+        }
+
+        function appendTableRow(id, sku, customer, summaryText) {
+            const row = document.createElement("tr");
+
+            const tdId = document.createElement("td");
+            tdId.textContent = "#" + id;
+
+            const tdSku = document.createElement("td");
+            const strongSku = document.createElement("strong");
+            strongSku.textContent = sku;
+            tdSku.appendChild(strongSku);
+
+            const tdCustomer = document.createElement("td");
+            tdCustomer.textContent = customer;
+
+            const tdSummary = document.createElement("td");
+            tdSummary.textContent = summaryText;
+
+            const tdAction = document.createElement("td");
+            const delBtn = document.createElement("button");
+            delBtn.type = "button";
+            delBtn.className = "btn-delete";
+            delBtn.textContent = "Delete";
+            delBtn.addEventListener("click", function () {
+                deleteFromEndpoint(id, row);
+            });
+            tdAction.appendChild(delBtn);
+
+            row.appendChild(tdId);
+            row.appendChild(tdSku);
+            row.appendChild(tdCustomer);
+            row.appendChild(tdSummary);
+            row.appendChild(tdAction);
+            tableBody.appendChild(row);
+        }
+
+        function processAndDisplayRecords(rawRecords) {
+            tableBody.innerHTML = "";
+            rawRecords.forEach(function (item, index) {
+                const order = sampleOrders[index] || {
+                    sku: "SS-10" + item.id,
+                    customer: "Customer " + item.id,
+                    amount: 2500
+                };
+                const tierLabel = order.amount >= 5000 ? "Priority" : "Standard";
+                appendTableRow(item.id, order.sku, order.customer, "Rs. " + order.amount + " (" + tierLabel + ")");
+            });
+            logDebug("Processed and displayed " + rawRecords.length + " records in DOM table.");
+        }
+
+        async function fetchFromEndpoint() {
+            apiStatus.textContent = "API Status: GET Request...";
+            logDebug("Sending GET request to " + ENDPOINT_URL + "?_limit=4");
+            try {
+                const response = await fetch(ENDPOINT_URL + "?_limit=4");
+                logDebug("GET Response HTTP Status: " + response.status);
+                if (!response.ok) {
+                    throw new Error("HTTP " + response.status);
+                }
+                const data = await response.json();
+                processAndDisplayRecords(data);
+                apiStatus.textContent = "API Status: 200 OK (GET)";
+            } catch (error) {
+                apiStatus.textContent = "API Status: Offline Fallback Loaded";
+                logDebug("GET Fetch Error: " + error.message + " - Loading local fallback records.");
+                processAndDisplayRecords([{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }]);
+            }
+        }
+
+        async function submitOrderRecord() {
+            const sku = document.getElementById("skuId").value.trim();
+            const customer = document.getElementById("customerName").value.trim();
+            const amountRaw = document.getElementById("orderAmount").value.trim();
+
+            if (sku === "" || customer === "" || amountRaw === "") {
+                showAlert("Validation Error: All input fields are required.", true);
+                logDebug("Validation failed: Empty input box.");
+                return;
+            }
+
+            if (!/^[0-9]+$/.test(amountRaw) || Number(amountRaw) < 100 || Number(amountRaw) > 500000) {
+                showAlert("Validation Error: Enter a valid numeric order amount between 100 and 500000.", true);
+                logDebug("Validation failed: Invalid amount (" + amountRaw + ").");
+                return;
+            }
+
+            const amount = Number(amountRaw);
+            const tierLabel = amount >= 5000 ? "Priority" : "Standard";
+            apiStatus.textContent = "API Status: POST Request...";
+            logDebug("Sending POST payload: " + JSON.stringify({ sku: sku, customer: customer, amount: amount }));
+
+            try {
+                const response = await fetch(ENDPOINT_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ title: sku, body: customer, userId: amount })
+                });
+                logDebug("POST Response HTTP Status: " + response.status);
+                const newId = Math.floor(Math.random() * 900) + 100;
+                appendTableRow(newId, sku, customer, "Rs. " + amount + " (" + tierLabel + ")");
+                apiStatus.textContent = "API Status: 201 Created (POST)";
+                showAlert("Success: Record #" + newId + " pushed to endpoint.", false);
+                document.getElementById("endpointForm").reset();
+            } catch (error) {
+                const newId = Math.floor(Math.random() * 900) + 100;
+                appendTableRow(newId, sku, customer, "Rs. " + amount + " (" + tierLabel + ")");
+                apiStatus.textContent = "API Status: Offline POST Simulated";
+                logDebug("POST Fetch Error: " + error.message + " - Appended locally.");
+                showAlert("Record #" + newId + " processed and displayed locally.", false);
+                document.getElementById("endpointForm").reset();
+            }
+        }
+
+        async function deleteFromEndpoint(id, rowEl) {
+            logDebug("Sending DELETE request for Record #" + id);
+            try {
+                const response = await fetch(ENDPOINT_URL + "/" + id, { method: "DELETE" });
+                logDebug("DELETE Response HTTP Status: " + response.status);
+                rowEl.remove();
+                apiStatus.textContent = "API Status: 200 OK (DELETE)";
+                showAlert("Record #" + id + " deleted from endpoint.", false);
+            } catch (error) {
+                rowEl.remove();
+                logDebug("DELETE Error: " + error.message + " - Removed row from DOM.");
+                showAlert("Record #" + id + " removed locally.", false);
+            }
+        }
+
+        function runEndpointTest() {
+            logDebug("TEST SUITE: Starting endpoint diagnostics...");
+            logDebug("TEST 1: DOM table binding: " + (tableBody ? "PASS" : "FAIL"));
+            logDebug("TEST 2: Numeric regex validation: " + (/^[0-9]+$/.test("3500") ? "PASS" : "FAIL"));
+            fetchFromEndpoint();
+        }
+
+        fetchFromEndpoint();
+    </script>
+</body>
+</html>

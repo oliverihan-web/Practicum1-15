@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopSphere Web Forms</title>
+</head>
+<body>
+    <h1>ShopSphere</h1>
+    <p><b>AI-Driven Personalized Shopping Experience — Customer Web Forms</b></p>
+    <hr>
+
+    <!-- FORM 1: Product Order & Delivery Form -->
+    <h2>1. Product Order &amp; Delivery Form</h2>
+    <form action="#" method="POST">
+        <table>
+            <tr>
+                <td><label for="fname">First Name:</label></td>
+                <td><input type="text" id="fname" name="firstName" placeholder="Olive" maxlength="30" required></td>
+            </tr>
+            <tr>
+                <td><label for="lname">Last Name:</label></td>
+                <td><input type="text" id="lname" name="lastName" placeholder="Minz" maxlength="30" required></td>
+            </tr>
+            <tr>
+                <td colspan="2"><b>Delivery Address</b></td>
+            </tr>
+            <tr>
+                <td><label for="street">Number &amp; Street:</label></td>
+                <td><input type="text" id="street" name="street" placeholder="FDR Hostel, Karunya Nagar" required></td>
+            </tr>
+            <tr>
+                <td><label for="city">City:</label></td>
+                <td><input type="text" id="city" name="city" placeholder="Coimbatore" required></td>
+            </tr>
+            <tr>
+                <td><label for="state">State:</label></td>
+                <td><input type="text" id="state" name="state" placeholder="Tamil Nadu" required></td>
+            </tr>
+            <tr>
+                <td><label for="zip">PIN / Zip Code:</label></td>
+                <td><input type="text" id="zip" name="zipCode" placeholder="641114" pattern="[0-9]{6}" maxlength="6" required></td>
+            </tr>
+            <tr>
+                <td><label for="odate">Order Date:</label></td>
+                <td><input type="date" id="odate" name="orderDate" min="2026-01-01" max="2026-12-31" required></td>
+            </tr>
+            <tr>
+                <td><label for="ddate">Preferred Delivery Date:</label></td>
+                <td><input type="date" id="ddate" name="deliveryDate" min="2026-01-01" max="2026-12-31" required></td>
+            </tr>
+            <tr>
+                <td><label for="phone">Phone Number:</label></td>
+                <td><input type="tel" id="phone" name="phone" placeholder="98765-43210" pattern="[0-9]{5}-[0-9]{5}" required></td>
+            </tr>
+            <tr>
+                <td><label for="email">E-mail Address:</label></td>
+                <td><input type="email" id="email" name="email" placeholder="customer@shopsphere.com" required></td>
+            </tr>
+            <tr>
+                <td><label for="category">Product Category:</label></td>
+                <td>
+                    <select id="category" name="category">
+                        <option value="electronics">Electronics &amp; Gadgets</option>
+                        <option value="fashion">Fashion &amp; Apparel</option>
+                        <option value="home">Home &amp; Kitchen</option>
+                        <option value="accessories">Smart Accessories</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><b>Payment Method:</b></td>
+                <td>
+                    <input type="radio" id="payCard" name="paymentMethod" value="Card" checked>
+                    <label for="payCard">Credit / Debit Card</label>
+                    <input type="radio" id="payUpi" name="paymentMethod" value="UPI">
+                    <label for="payUpi">UPI</label>
+                    <input type="radio" id="payCod" name="paymentMethod" value="COD">
+                    <label for="payCod">Cash on Delivery</label>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="card">Card / Reference Number:</label></td>
+                <td><input type="text" id="card" name="cardNumber" placeholder="XXXX-XXXX-XXXX-XXXX" maxlength="19"></td>
+            </tr>
+            <tr>
+                <td><b>Shopping Add-ons:</b></td>
+                <td>
+                    <input type="checkbox" id="addonExpress" name="addons" value="ExpressDelivery">
+                    <label for="addonExpress">Express Delivery</label>
+                    <input type="checkbox" id="addonGift" name="addons" value="GiftWrap">
+                    <label for="addonGift">Gift Wrapping</label>
+                    <input type="checkbox" id="addonAiAlert" name="addons" value="PriceAlerts">
+                    <label for="addonAiAlert">AI Price Alerts</label>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="requests"><b>Special Requests:</b></label></td>
+                <td><textarea id="requests" name="specialRequests" rows="4" cols="30" placeholder="Enter your delivery request here..."></textarea></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="submit" value="Place Order">
+                    <input type="reset" value="Clear">
+                </td>
+            </tr>
+        </table>
+    </form>
+
+    <hr>
+
+    <!-- FORM 2: Member Registration & AI Preferences -->
+    <h2>2. ShopSphere Member Registration &amp; AI Preferences</h2>
+    <form action="#" method="POST">
+        <table>
+            <tr>
+                <td><label for="memberId">Member ID:</label></td>
+                <td><input type="text" id="memberId" name="memberId" value="SS-2026-1141" readonly></td>
+            </tr>
+            <tr>
+                <td><label for="pass">Account Password:</label></td>
+                <td><input type="password" id="pass" name="accountPassword" placeholder="Enter password" maxlength="20" required></td>
+            </tr>
+            <tr>
+                <td><label for="age">Customer Age (18 to 80):</label></td>
+                <td><input type="number" id="age" name="userAge" min="18" max="80" placeholder="20" required></td>
+            </tr>
+            <tr>
+                <td><label for="dtime">Preferred Delivery Time:</label></td>
+                <td><input type="time" id="dtime" name="deliveryTime"></td>
+            </tr>
+            <tr>
+                <td><label for="budget">Monthly Shopping Budget:</label></td>
+                <td><input type="range" id="budget" name="budgetRange" min="500" max="50000" step="500" value="5000"></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="submit" value="Register Account">
+                    <input type="reset" value="Clear">
+                </td>
+            </tr>
+        </table>
+    </form>
+
+    <hr>
+
+    <!-- FORM 3: Customer Support & Feedback -->
+    <h2>3. Customer Support &amp; Feedback</h2>
+    <form action="#" method="POST">
+        <table>
+            <tr>
+                <td><label for="receipt">Upload Order Receipt:</label></td>
+                <td><input type="file" id="receipt" name="receiptFile"></td>
+            </tr>
+            <tr>
+                <td><label for="feedback">Message / Feedback:</label></td>
+                <td><textarea id="feedback" name="feedbackMsg" rows="4" cols="30" placeholder="Type your feedback or support query here..." required></textarea></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="submit" value="Send Feedback">
+                    <input type="reset" value="Clear">
+                    <button type="button" onclick="alert('ShopSphere Support: shopsphere@example.com')">Help Desk</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+    <hr>
+    <p>&copy; 2026 <b>ShopSphere</b> | AI-Powered Shopping</p>
+</body>
+</html>

@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopSphere - Smart Shopping Interactive Quiz</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f7fa;
+            color: #222222;
+            padding: 30px;
+        }
+        .container {
+            max-width: 760px;
+            margin: 0 auto;
+        }
+        .header {
+            background-color: #1b365d;
+            color: #ffffff;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            border-bottom: 4px solid #0284c7;
+        }
+        .header h1 {
+            font-size: 24px;
+            color: #38bdf8;
+            margin-bottom: 6px;
+        }
+        .header p {
+            font-size: 14px;
+            color: #dbeafe;
+        }
+        .quiz-card {
+            background-color: #ffffff;
+            padding: 28px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+        }
+        .quiz-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #475569;
+        }
+        .progress-track {
+            width: 100%;
+            height: 8px;
+            background-color: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 22px;
+        }
+        .progress-fill {
+            height: 100%;
+            width: 20%;
+            background-color: #0284c7;
+            transition: width 0.3s ease;
+        }
+        .question-text {
+            font-size: 19px;
+            color: #1b365d;
+            margin-bottom: 20px;
+            line-height: 1.45;
+        }
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .option-btn {
+            width: 100%;
+            text-align: left;
+            padding: 14px 16px;
+            font-size: 15px;
+            background-color: #f8fafc;
+            color: #1b365d;
+            border: 2px solid #cbd5e1;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .option-btn:hover:not(:disabled) {
+            border-color: #0284c7;
+            background-color: #f0f9ff;
+        }
+        .option-btn.correct {
+            background-color: #d4edda;
+            border-color: #15803d;
+            color: #14532d;
+        }
+        .option-btn.wrong {
+            background-color: #ffe5e5;
+            border-color: #dc3545;
+            color: #991b1b;
+        }
+        .option-btn:disabled {
+            cursor: default;
+        }
+        .warning-msg {
+            display: none;
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 10px 14px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 16px;
+        }
+        .footer-controls {
+            display: flex;
+            justify-content: flex-end;
+        }
+        .btn-next {
+            background-color: #0284c7;
+            color: #ffffff;
+            border: none;
+            padding: 12px 26px;
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn-next:hover {
+            background-color: #0369a1;
+        }
+        .result-box {
+            display: none;
+            text-align: center;
+            padding: 15px 0;
+        }
+        .result-box h2 {
+            font-size: 24px;
+            color: #1b365d;
+            margin-bottom: 10px;
+        }
+        .score-circle {
+            display: inline-block;
+            background-color: #1b365d;
+            color: #38bdf8;
+            border: 4px solid #0284c7;
+            font-size: 26px;
+            font-weight: bold;
+            padding: 20px 34px;
+            border-radius: 50px;
+            margin: 16px 0;
+        }
+        .result-box p {
+            font-size: 15px;
+            color: #475569;
+            margin-bottom: 22px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>ShopSphere Smart Shopping Quiz</h1>
+            <p>Test your knowledge of AI-driven e-commerce, smart search, and ShopSphere platform features</p>
+        </div>
+
+        <div class="quiz-card">
+            <div id="quizBody">
+                <div class="quiz-meta">
+                    <span id="questionCounter">Question 1 of 5</span>
+                    <span id="liveScore">Score: 0</span>
+                </div>
+
+                <div class="progress-track">
+                    <div class="progress-fill" id="progressBar"></div>
+                </div>
+
+                <h2 class="question-text" id="questionText">Loading question...</h2>
+
+                <div class="options-list" id="optionsContainer"></div>
+
+                <div class="warning-msg" id="warningMsg">Please select an answer before clicking Next.</div>
+
+                <div class="footer-controls">
+                    <button type="button" class="btn-next" id="nextBtn" onclick="nextQuestion()">Next</button>
+                </div>
+            </div>
+
+            <div class="result-box" id="resultBox">
+                <h2>Quiz Complete</h2>
+                <div class="score-circle" id="finalScoreText">0 / 5</div>
+                <p id="resultSummary"></p>
+                <button type="button" class="btn-next" onclick="restartQuiz()">Retake Quiz</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const quizQuestions = [
+            {
+                question: "How does ShopSphere personalize product recommendations for each shopper?",
+                options: [
+                    "By showing the exact same catalog order to every visitor",
+                    "By analyzing browsing history, preferences, and past interactions with AI",
+                    "By randomly shuffling products every minute",
+                    "By displaying only the highest-priced items first"
+                ],
+                correctIndex: 1
+            },
+            {
+                question: "Which ShopSphere feature helps customers quickly locate items using intent and category filters?",
+                options: [
+                    "Static Directory List",
+                    "Manual SKU Lookup",
+                    "Smart Search",
+                    "Offline Brochure View"
+                ],
+                correctIndex: 2
+            },
+            {
+                question: "What is the primary benefit of ShopSphere Dynamic Price Alerts?",
+                options: [
+                    "Notifying shoppers automatically when tracked products drop in price",
+                    "Increasing checkout taxes during flash sales",
+                    "Clearing the user's shopping cart every hour",
+                    "Disabling express delivery options"
+                ],
+                correctIndex: 0
+            },
+            {
+                question: "Which ShopSphere storefront product is featured as active noise-cancelling wireless audio?",
+                options: [
+                    "UrbanPack Backpack",
+                    "AeroBuds Pro",
+                    "StrideMax Runners",
+                    "ChronoShade Combo"
+                ],
+                correctIndex: 1
+            },
+            {
+                question: "Why does ShopSphere use client-side DOM updates during checkout and interactive quizzes?",
+                options: [
+                    "To force a full browser reload after every click",
+                    "To remove all CSS styling from the page",
+                    "To give instant visual feedback without reloading the webpage",
+                    "To disable keyboard and mouse events"
+                ],
+                correctIndex: 2
+            }
+        ];
+
+        let currentIndex = 0;
+        let score = 0;
+        let answeredCurrent = false;
+
+        function loadQuestion() {
+            answeredCurrent = false;
+            const current = quizQuestions[currentIndex];
+
+            const questionCounter = document.getElementById("questionCounter");
+            const liveScore = document.getElementById("liveScore");
+            const progressBar = document.getElementById("progressBar");
+            const questionText = document.getElementById("questionText");
+            const optionsContainer = document.getElementById("optionsContainer");
+            const warningMsg = document.getElementById("warningMsg");
+            const nextBtn = document.getElementById("nextBtn");
+
+            warningMsg.style.display = "none";
+            questionCounter.textContent = "Question " + (currentIndex + 1) + " of " + quizQuestions.length;
+            liveScore.textContent = "Score: " + score;
+            progressBar.style.width = (((currentIndex + 1) / quizQuestions.length) * 100) + "%";
+            questionText.textContent = current.question;
+            nextBtn.textContent = currentIndex === quizQuestions.length - 1 ? "Finish" : "Next";
+
+            optionsContainer.innerHTML = "";
+            current.options.forEach(function (optionText, index) {
+                const btn = document.createElement("button");
+                btn.type = "button";
+                btn.className = "option-btn";
+                btn.textContent = optionText;
+                btn.addEventListener("click", function () {
+                    selectAnswer(index);
+                });
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function selectAnswer(selectedIndex) {
+            if (answeredCurrent) {
+                return;
+            }
+            answeredCurrent = true;
+            document.getElementById("warningMsg").style.display = "none";
+
+            const current = quizQuestions[currentIndex];
+            const buttons = document.querySelectorAll(".option-btn");
+
+            buttons.forEach(function (btn, idx) {
+                btn.disabled = true;
+                if (idx === current.correctIndex) {
+                    btn.classList.add("correct");
+                } else if (idx === selectedIndex) {
+                    btn.classList.add("wrong");
+                }
+            });
+
+            if (selectedIndex === current.correctIndex) {
+                score++;
+                document.getElementById("liveScore").textContent = "Score: " + score;
+            }
+        }
+
+        function nextQuestion() {
+            if (!answeredCurrent) {
+                document.getElementById("warningMsg").style.display = "block";
+                return;
+            }
+            currentIndex++;
+            if (quizQuestions.length > currentIndex) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            document.getElementById("quizBody").style.display = "none";
+            const resultBox = document.getElementById("resultBox");
+            const finalScoreText = document.getElementById("finalScoreText");
+            const resultSummary = document.getElementById("resultSummary");
+
+            resultBox.style.display = "block";
+            finalScoreText.textContent = score + " / " + quizQuestions.length;
+
+            if (score >= 4) {
+                resultSummary.textContent = "Excellent work! You have a strong command of ShopSphere smart shopping features.";
+            } else if (score >= 2) {
+                resultSummary.textContent = "Good effort! Review ShopSphere AI tools and catalog highlights to boost your score.";
+            } else {
+                resultSummary.textContent = "Keep practicing! Explore ShopSphere features and retake the quiz.";
+            }
+        }
+
+        function restartQuiz() {
+            currentIndex = 0;
+            score = 0;
+            document.getElementById("resultBox").style.display = "none";
+            document.getElementById("quizBody").style.display = "block";
+            loadQuestion();
+        }
+
+        loadQuestion();
+    </script>
+</body>
+</html>

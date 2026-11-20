@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopSphere - Positioning Elements</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f7fa;
+            color: #222222;
+            padding-top: 85px;
+            padding-bottom: 40px;
+        }
+        .fixed-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #1b365d;
+            color: #ffffff;
+            padding: 16px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid #0284c7;
+            z-index: 100;
+        }
+        .fixed-header h1 {
+            font-size: 20px;
+            color: #ffffff;
+            letter-spacing: 0.5px;
+        }
+        .fixed-header span {
+            font-size: 13px;
+            background-color: #294c7a;
+            color: #e0f2fe;
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid #38bdf8;
+        }
+        .page-title {
+            text-align: center;
+            margin-bottom: 28px;
+            padding: 0 16px;
+        }
+        .page-title h2 {
+            font-size: 24px;
+            color: #1b365d;
+            margin-bottom: 6px;
+        }
+        .page-title p {
+            font-size: 14px;
+            color: #555555;
+        }
+        .quadrant-wrapper {
+            position: relative;
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 32px;
+        }
+        .center-hub {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 108px;
+            height: 108px;
+            background-color: #1b365d;
+            color: #ffffff;
+            border: 4px solid #0284c7;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-size: 12px;
+            font-weight: bold;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.22);
+            z-index: 20;
+        }
+        .quadrant-card {
+            position: relative;
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 40px 26px 42px;
+            border: 1px solid #cbd5e1;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+            min-height: 195px;
+            z-index: 5;
+        }
+        .corner-badge {
+            position: absolute;
+            top: 12px;
+            right: 14px;
+            background-color: #e0f2fe;
+            color: #0369a1;
+            font-size: 11px;
+            font-weight: bold;
+            padding: 4px 10px;
+            border-radius: 12px;
+            z-index: 10;
+        }
+        .bottom-tag {
+            position: absolute;
+            bottom: 14px;
+            left: 26px;
+            font-size: 12px;
+            color: #15803d;
+            font-weight: bold;
+        }
+        .quadrant-card h3 {
+            font-size: 18px;
+            color: #1b365d;
+            margin-bottom: 8px;
+        }
+        .quadrant-card p {
+            font-size: 14px;
+            color: #475569;
+            line-height: 1.5;
+        }
+        @media (max-width: 650px) {
+            .quadrant-wrapper {
+                grid-template-columns: 1fr;
+                gap: 18px;
+            }
+            .center-hub {
+                position: static;
+                transform: none;
+                margin: 0 auto 8px;
+                width: 100%;
+                height: auto;
+                border-radius: 8px;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="fixed-header">
+        <h1>SHOPSPHERE HUB</h1>
+        <span>AI Engine Active</span>
+    </header>
+
+    <div class="page-title">
+        <h2>AI-Driven Smart Shopping Hub</h2>
+        <p>Personalized commerce modules arranged across four positioned ShopSphere storefront zones</p>
+    </div>
+
+    <div class="quadrant-wrapper">
+        <div class="center-hub">
+            <span>SHOPSPHERE</span>
+            <span>AI CORE</span>
+        </div>
+
+        <div class="quadrant-card">
+            <span class="corner-badge">AI &bull; 96% Match</span>
+            <h3>Smart Recommendations</h3>
+            <p>Personalized product discovery tailored to browsing habits, wishlist activity, and style preferences.</p>
+            <span class="bottom-tag">Zone Active</span>
+        </div>
+
+        <div class="quadrant-card">
+            <span class="corner-badge">SEARCH &bull; Fast</span>
+            <h3>Smart Catalog Search</h3>
+            <p>Instant product lookup with intelligent category filters, synonyms, and real-time stock checks.</p>
+            <span class="bottom-tag">Zone Active</span>
+        </div>
+
+        <div class="quadrant-card">
+            <span class="corner-badge">DEALS &bull; Live</span>
+            <h3>Dynamic Price Alerts</h3>
+            <p>Automated price-drop monitoring and flash deal notifications across your tracked items.</p>
+            <span class="bottom-tag">Zone Active</span>
+        </div>
+
+        <div class="quadrant-card">
+            <span class="corner-badge">ORDER &bull; 24h</span>
+            <h3>Express Dispatch</h3>
+            <p>Priority order fulfillment with live parcel tracking and doorstep delivery status updates.</p>
+            <span class="bottom-tag">Zone Active</span>
+        </div>
+    </div>
+</body>
+</html>

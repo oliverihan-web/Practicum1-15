@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopSphere - UI Components for Animation</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f7fa;
+            color: #222222;
+            padding: 30px;
+        }
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border-top: 4px solid #0284c7;
+        }
+        .banner {
+            background-color: #1b365d;
+            padding: 25px;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: #38bdf8;
+            font-size: 26px;
+            white-space: nowrap;
+            animation-duration: 3s;
+            animation-name: slidePromo;
+            animation-iteration-count: 3;
+            animation-direction: normal;
+        }
+        @keyframes slidePromo {
+            from {
+                margin-left: 100%;
+            }
+            to {
+                margin-left: 0%;
+            }
+        }
+        p {
+            font-size: 15px;
+            color: #444444;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+        ul {
+            margin-top: 15px;
+            padding: 15px 25px 15px 35px;
+            background-color: #f8fafc;
+            border-radius: 6px;
+            border: 1px solid #cbd5e1;
+        }
+        li {
+            font-size: 14px;
+            color: #1b365d;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="banner">
+            <h1 id="shopHeading">ShopSphere Flash Deals &amp; AI Picks Live</h1>
+        </div>
+
+        <p>This example demonstrates how to use CSS keyframe animations to slide the ShopSphere promotional heading across the banner window and repeat three times.</p>
+        <p>Each time a CSS animation lifecycle event fires during the 3-second cycle, its elapsed time is recorded below:</p>
+
+        <ul id="eventLog"></ul>
+    </div>
+
+    <script>
+        const heading = document.getElementById("shopHeading");
+        const logList = document.getElementById("eventLog");
+
+        function addLog(message) {
+            const item = document.createElement("li");
+            item.textContent = message;
+            logList.appendChild(item);
+        }
+
+        heading.addEventListener("animationstart", function (event) {
+            addLog("Started: elapsed time is " + event.elapsedTime);
+        });
+
+        heading.addEventListener("animationiteration", function (event) {
+            addLog("New loop started at time " + event.elapsedTime);
+        });
+
+        heading.addEventListener("animationend", function (event) {
+            addLog("Ended: elapsed time is " + event.elapsedTime);
+        });
+    </script>
+</body>
+</html>

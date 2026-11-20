@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopSphere - Live Storefront DOM Monitor</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f7fa;
+            color: #222222;
+            padding: 30px;
+        }
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+        }
+        .header {
+            background-color: #1b365d;
+            color: #ffffff;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            border-bottom: 4px solid #0284c7;
+        }
+        .header h1 {
+            font-size: 24px;
+            color: #38bdf8;
+            margin-bottom: 6px;
+        }
+        .header p {
+            font-size: 14px;
+            color: #dbeafe;
+        }
+        .card {
+            background-color: #ffffff;
+            padding: 24px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+            margin-bottom: 20px;
+        }
+        .card h2 {
+            font-size: 19px;
+            color: #1b365d;
+            margin-bottom: 8px;
+        }
+        .card p {
+            font-size: 14px;
+            color: #555555;
+            margin-bottom: 14px;
+        }
+        .live-display {
+            font-size: 30px;
+            font-weight: bold;
+            color: #38bdf8;
+            background-color: #1b365d;
+            padding: 16px;
+            border-radius: 6px;
+            text-align: center;
+            margin-bottom: 14px;
+        }
+        .btn-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            background-color: #0284c7;
+            color: #ffffff;
+            border: none;
+            padding: 10px 18px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #0369a1;
+        }
+        .btn-stop {
+            background-color: #dc3545;
+            color: #ffffff;
+        }
+        .btn-stop:hover {
+            background-color: #b02a37;
+        }
+        .form-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .form-row label {
+            font-size: 14px;
+            font-weight: bold;
+            color: #1b365d;
+        }
+        input[type="text"] {
+            padding: 10px 12px;
+            border: 1px solid #94a3b8;
+            border-radius: 4px;
+            font-size: 14px;
+            flex: 1;
+            min-width: 200px;
+        }
+        .status-box {
+            margin-top: 14px;
+            padding: 12px;
+            border-radius: 4px;
+            background-color: #eaf0f6;
+            color: #1b365d;
+            font-size: 14px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header" id="mainHeader">
+            <h1>ShopSphere Live Storefront Monitor</h1>
+            <p id="storeSubtitle">Active Storefront: ShopSphere AI Hub</p>
+        </div>
+
+        <div class="card">
+            <h2>1. Live Shopper Activity Stream</h2>
+            <p>Start or pause real-time active shopper counts updated every second using DOM manipulation.</p>
+            <div class="live-display" id="trafficDisplay">142 Active Shoppers</div>
+            <div class="btn-row">
+                <button type="button" id="startIntervalBtn" class="btn" onclick="startTrafficStream()">Start Live Feed</button>
+                <button type="button" id="stopIntervalBtn" class="btn btn-stop" onclick="stopTrafficStream()">Pause Feed</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>2. Scheduled Cart &amp; Wishlist Cloud Sync</h2>
+            <p>Trigger a 3-second delayed cloud backup of your ShopSphere cart or cancel before upload starts.</p>
+            <div class="btn-row">
+                <button type="button" id="startTimeoutBtn" class="btn" onclick="scheduleCartSync()">Sync in 3 Seconds</button>
+                <button type="button" id="cancelTimeoutBtn" class="btn btn-stop" onclick="cancelCartSync()">Cancel Sync</button>
+            </div>
+            <div class="status-box" id="syncStatusBox">Cloud Sync Status: Idle</div>
+        </div>
+
+        <div class="card">
+            <h2>3. Active Shopper Profile</h2>
+            <p>Assign your name to personalize the connected ShopSphere AI shopping session.</p>
+            <form id="profileForm" action="#" class="form-row">
+                <label for="shopperInput">Shopper Name:</label>
+                <input type="text" id="shopperInput" placeholder="Enter Shopper Full Name">
+                <button type="button" id="updateProfileBtn" class="btn" onclick="updateShopperProfile()">Assign Profile</button>
+            </form>
+            <div class="status-box" id="profileOutput">Active Profile: Unassigned</div>
+        </div>
+    </div>
+
+    <script>
+        let trafficIntervalId = null;
+        let syncTimeoutId = null;
+
+        function startTrafficStream() {
+            if (trafficIntervalId !== null) {
+                return;
+            }
+            const displayEl = document.querySelector("#trafficDisplay");
+            trafficIntervalId = setInterval(function () {
+                const activeCount = Math.floor(Math.random() * 61) + 120;
+                displayEl.textContent = activeCount + " Active Shoppers";
+            }, 1000);
+        }
+
+        function stopTrafficStream() {
+            clearInterval(trafficIntervalId);
+            trafficIntervalId = null;
+            const displayEl = document.querySelector("#trafficDisplay");
+            displayEl.textContent = "Live Feed Paused";
+        }
+
+        function scheduleCartSync() {
+            clearTimeout(syncTimeoutId);
+            const syncBox = document.querySelector("#syncStatusBox");
+            syncBox.textContent = "Cloud Sync Status: Uploading cart data in 3 seconds...";
+            syncTimeoutId = setTimeout(function () {
+                syncBox.textContent = "Cloud Sync Status: Cart & Wishlist Synced Successfully!";
+                syncTimeoutId = null;
+            }, 3000);
+        }
+
+        function cancelCartSync() {
+            if (syncTimeoutId !== null) {
+                clearTimeout(syncTimeoutId);
+                syncTimeoutId = null;
+                const syncBox = document.querySelector("#syncStatusBox");

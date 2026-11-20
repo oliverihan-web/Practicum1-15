@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopSphere - Form with Validation</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f7fa;
+            color: #222222;
+            padding: 25px;
+        }
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #cbd5e1;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            padding-bottom: 30px;
+        }
+        .store-banner {
+            background-color: #1b365d;
+            color: #38bdf8;
+            text-align: center;
+            padding: 20px;
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            border-bottom: 4px solid #0284c7;
+        }
+        .products-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            padding: 24px;
+        }
+        .product-card {
+            text-align: center;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 10px;
+            background-color: #f8fafc;
+        }
+        .product-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            display: block;
+        }
+        .product-card p {
+            font-size: 14px;
+            font-weight: bold;
+            color: #1b365d;
+        }
+        .order-section {
+            max-width: 520px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .order-section h2 {
+            text-align: center;
+            color: #1b365d;
+            font-size: 22px;
+            margin-bottom: 18px;
+        }
+        .form-group {
+            margin-bottom: 14px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: bold;
+            color: #1b365d;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #94a3b8;
+            border-radius: 4px;
+        }
+        .btn-order {
+            display: block;
+            width: 220px;
+            margin: 20px auto;
+            padding: 11px;
+            background-color: #0284c7;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .btn-order:hover {
+            background-color: #0369a1;
+        }
+        .error-msg {
+            display: none;
+            background-color: #ffe5e5;
+            color: #b30000;
+            border: 1px solid #f5c2c7;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        hr {
+            border: 0;
+            height: 2px;
+            background-color: #0284c7;
+            margin: 20px 0;
+        }
+        .bill-section {
+            text-align: center;
+        }
+        .bill-title {
+            color: #15803d;
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 14px;
+        }
+        .total-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+        }
+        .total-label {
+            background-color: #15803d;
+            color: #ffffff;
+            padding: 10px 42px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 4px;
+        }
+        .total-amount {
+            color: #dc3545;
+            font-size: 22px;
+            font-weight: bold;
+        }
+        @media (max-width: 768px) {
+            .products-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 480px) {
+            .products-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="store-banner">SHOPSPHERE SMART STORE</div>
+
+        <div class="products-row">
+            <div class="product-card">
+                <img src="https://images.pexels.com/photos/27173308/pexels-photo-27173308.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=600" alt="AeroBuds Pro Wireless Earbuds">
+                <p>AeroBuds Pro - Rs. 3500</p>
+            </div>
+            <div class="product-card">
+                <img src="https://images.pexels.com/photos/3081174/pexels-photo-3081174.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=600" alt="StudioBeat Over-Ear Headphones">
+                <p>StudioBeat Headset - Rs. 5000</p>
+            </div>
+            <div class="product-card">
+                <img src="https://images.pexels.com/photos/1456705/pexels-photo-1456705.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=600" alt="StrideMax Running Sneakers">
+                <p>StrideMax Runners - Rs. 3900</p>
+            </div>
+            <div class="product-card">
+                <img src="https://images.pexels.com/photos/18999340/pexels-photo-18999340.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=600" alt="UrbanPack Commuter Backpack">
+                <p>UrbanPack Bag - Rs. 2300</p>
+            </div>
+        </div>
+
+        <div class="order-section">
+            <h2>Order Products</h2>
+            <div id="errorBox" class="error-msg"></div>
+
+            <form id="orderForm" action="#">
+                <div class="form-group">
+                    <label for="custId">Customer ID:</label>
+                    <input type="text" id="custId" placeholder="Enter numeric ID (e.g. 1141)">
+                </div>
+                <div class="form-group">
+                    <label for="qtyBuds">AeroBuds Pro (Quantity):</label>
+                    <input type="text" id="qtyBuds" value="1">
+                </div>
+                <div class="form-group">
+                    <label for="qtyHeadset">StudioBeat Headset (Quantity):</label>
+                    <input type="text" id="qtyHeadset" value="0">
+                </div>
+                <div class="form-group">
+                    <label for="qtyRunners">StrideMax Runners (Quantity):</label>
+                    <input type="text" id="qtyRunners" value="1">
+                </div>
+                <div class="form-group">
+                    <label for="qtyBag">UrbanPack Bag (Quantity):</label>
+                    <input type="text" id="qtyBag" value="0">
+                </div>
+                <button type="submit" class="btn-order" onclick="validateAndCalculate(event)">Place Order</button>
+            </form>
+
+            <hr>
+
+            <div class="bill-section">
+                <div class="bill-title">Purchase Order Bill!!</div>
+                <div class="total-row">
+                    <div class="total-label">Total Price</div>
+                    <div class="total-amount" id="totalDisplay">Rs. 0</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function validateAndCalculate(event) {
+            event.preventDefault();
+
+            const custId = document.getElementById("custId").value.trim();
+            const rawBuds = document.getElementById("qtyBuds").value.trim();
+            const rawHeadset = document.getElementById("qtyHeadset").value.trim();
+            const rawRunners = document.getElementById("qtyRunners").value.trim();
+            const rawBag = document.getElementById("qtyBag").value.trim();
+
+            const errorBox = document.getElementById("errorBox");
+            const totalDisplay = document.getElementById("totalDisplay");
+            const numbersOnlyRegex = /^[0-9]+$/;
+
+            if (custId === "" || rawBuds === "" || rawHeadset === "" || rawRunners === "" || rawBag === "") {
+                errorBox.style.display = "block";
+                errorBox.textContent = "Error: Input box cannot be empty. Fill all fields.";
+                totalDisplay.textContent = "Rs. 0";
+            } else if (!numbersOnlyRegex.test(custId) || !numbersOnlyRegex.test(rawBuds) || !numbersOnlyRegex.test(rawHeadset) || !numbersOnlyRegex.test(rawRunners) || !numbersOnlyRegex.test(rawBag)) {
+                errorBox.style.display = "block";
+                errorBox.textContent = "Error: Only numbers (0-9) are allowed in ID and quantity boxes.";
+                totalDisplay.textContent = "Rs. 0";
+            } else {
+                const qBuds = Number(rawBuds);
+                const qHeadset = Number(rawHeadset);
+                const qRunners = Number(rawRunners);
+                const qBag = Number(rawBag);
+
+                if (qBuds + qHeadset + qRunners + qBag === 0) {
+                    errorBox.style.display = "block";
+                    errorBox.textContent = "Error: Please order at least 1 product.";
+                    totalDisplay.textContent = "Rs. 0";
+                } else {
+                    errorBox.style.display = "none";
+                    const totalAmount = (qBuds * 3500) + (qHeadset * 5000) + (qRunners * 3900) + (qBag * 2300);
+                    totalDisplay.textContent = "Rs. " + totalAmount;
+                }
+            }
+        }
+    </script>
+</body>
+</html>
